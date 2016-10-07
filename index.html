@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+	<link rel="stylesheet" href="css/pinkAndDarkBlue.min.css">
+	<link rel="stylesheet" href="css/jquery.mobile.icons.min.css"/>
+	<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+</head>
+<body>
+
+
+<!-- 
+	The main page
+-->
+<div data-role="page" id="mainPage">
+	<div data-role="header">
+		<h1>ארוחת 10 שלי</h1>
+	</div>
+
+	<div data-role="main" class="ui-content">
+		<div class='marginDiv'></div>
+		<h1>?אין קפיטריה<br>!יש משלוחים לאהל שם</h1>
+		<h2>ניתן להזמין ממגוון מוצרים הנמצאים <a href="#menuPage">בתפריט</a></h2>
+		<h2>ניתן להזמין משלוח בכל שעות היום<br>ההזמנות יסופקו בשעה 10<br>וכן בשעה 12:30</h2>
+	</div>
+
+	<div data-role="footer">
+		<div data-role="navbar">
+			<ul>
+				<li><a href="#mainPage">בית</a></li>
+				<li><a href="#orderPage">הזמנה</a></li>
+				<li><a href="#menuPage">תפריט</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<!-- 
+	The menu page
+-->
+<div data-role="page" id="menuPage">
+	<div data-role="header">
+		<h1>ארוחת 10 שלי</h1>
+	</div>
+
+	<div data-role="main" class="ui-content">
+		<img src="menu.jpg" ></img>
+	</div>
+
+	<div data-role="footer">
+		<div data-role="navbar">
+			<ul>
+				<li><a href="#mainPage">בית</a></li>
+				<li><a href="#orderPage">הזמנה</a></li>
+				<li><a href="#menuPage">תפריט</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<!-- 
+	The order page
+-->
+<div data-role="page" id="orderPage">
+	<div data-role="header">
+		<h1>ארוחת 10 שלי</h1>
+	</div>
+
+	<div data-role="main" class="ui-content">
+		<div class='marginDiv'></div>		
+		<h2>:ההזמנה שלי</h2>
+		<textarea id='orderInfo'></textarea>
+		<h2>:הערות</h2>
+		<textarea id='orderComments'></textarea>
+		<div class="form-group">
+			<label class='credentialsLabal'>שם פרטי</label><input type="text" name="pname" id='orderPName'>
+		</div>
+		<div class="form-group">
+			<label class='credentialsLabal'>שם משפחה</label><input type="text" name="fname" id='orderFName'>
+		</div>
+		<div class="form-group">
+			<label class='credentialsLabal'>טלפון</label><input type="number" name="fphone" id='orderPhone'>
+		</div>
+		<br>
+		<button id='submitOrderButton'>הזמן</button>
+	</div>
+
+	<div data-role="footer">
+		<div data-role="navbar">
+			<ul>
+				<li><a href="#mainPage">בית</a></li>
+				<li><a href="#orderPage">הזמנה</a></li>
+				<li><a href="#menuPage">תפריט</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<link rel="stylesheet" href="css/a.css">
+<script src="js/engine.js"></script>
+</body>
+</html>
+
+
