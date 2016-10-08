@@ -31,9 +31,9 @@ function createOrderDiv(order) {
 function createOrderInfoDiv(order){
 	var orderDiv = $("<div class='orderInfoDiv'></div>");
 	var idP = $("<p>id: "+order.id+"</p>");
-	var userP = $("<p>name: "+order.name+", phone: "+order.phone+"</p>");
-	var infoP = $("<p>info:<br>"+order.info+"</p>");
-	var commentsP = $("<p>info:<br>"+order.comments+"</p>");
+	var userP = $("<p>private name: "+order.pname+", family name: "+order.fname+", phone: "+order.phone+"</p>");
+	var infoP = $("<p>info:<br>"+order.info.toString()+"</p>");
+	var commentsP = $("<p>comments:<br>"+order.comments+"</p>");
 	orderDiv.append(idP, userP, infoP, commentsP);
 
 	return orderDiv;
