@@ -1,8 +1,3 @@
-Add a button to stop orders
-	add button on orders page.
-	add states to server.
-
-
 Page of orders should ask every X seconds for new orders.\
 
 each order should have money to charge.
@@ -18,7 +13,4 @@ design the order page.
 create summery page.
 	name, phone, items, money, paid(yes/no)
 
-let the db read from json file when constructor initialize.
-
-create a folder for the db files.
-
+let the db read from json file when constructor initialize.	

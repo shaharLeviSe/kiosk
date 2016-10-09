@@ -8,3 +8,7 @@
 {
 	border-style: solid;
 }
+
+.stop-button-selected{
+	background-color: red;
+}

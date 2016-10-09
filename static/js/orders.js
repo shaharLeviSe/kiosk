@@ -1,17 +1,36 @@
-function sendRequest(reqData, successCB){
+function sendRequest(reqData, successCB, errorCB){
 	$.ajax(reqData.url, {
 		method : reqData.method,
 		data : reqData.data,
-		success : successCB,
+		success : function(data, textStatus, jqXHR){
+			if (successCB){
+				successCB(data, textStatus, jqXHR)
+			}else{
+				console.log("data: " + data);
+				console.log("textStatus: " + textStatus);
+				console.log("jqXHR: " + jqXHR);	
+			}
+		},
 		error : function(xhr, status, error){
-			console.error("xhr: " + xhr);
-			console.error("status: " + status);
-			console.error("error: " + error);
+			if (errorCB){
+				errorCB(xhr, status, error);
+			}else{
+				console.error("xhr: " + xhr);
+				console.error("status: " + status);
+				console.error("error: " + error);
+			}
 		}
 	}
 	);
 }
 
+var getOrdersStop = function(data){
+	if (data == "disable"){
+		alert(data);
+		$('#stopOrdersButton').attr('class', 'stop-button-selected');
+	}
+	
+}
 
 var addOrdersToDiv = function(ordersArray){
 	var ordersDivElement = $("#ordersDiv");
@@ -40,23 +59,47 @@ function createOrderInfoDiv(order){
 }
 
 function createBaseOrderDiv() {
-    var orderDiv = $("<div class='orderDiv'></div>"); 
-    
-    var toggleButtonText = "<div class='toggle-button'>"
-    +"<button></button>"
+	var orderDiv = $("<div class='orderDiv'></div>"); 
+
+	var toggleButtonText = "<div class='toggle-button'>"
+	+"<button></button>"
 	+"</div>";
 	var toggleButton = $(toggleButtonText);
 
-    orderDiv.append(toggleButton);
+	orderDiv.append(toggleButton);
 
-    return orderDiv;
+	return orderDiv;
 }
 
-$(document).on('click', '.toggle-button', function() {
-    $(this).toggleClass('toggle-button-selected'); 
+function onStopOrdersError(xhr, status, error){
+	alert('Orders not stopping. Problem!');
+}
+
+function stopOrdersToggle(stopOrders){
+	reqData.url = '/ordersList/stop';
+	reqData.method = 'post';
+	reqData.data = {stopOrders: stopOrders};
+	sendRequest(reqData, null, onStopOrdersError);
+}
+
+$(document).on('click', '.toggle-button-selected', function() {
+	$(this).attr('class', 'toggle-button'); 
+});
+
+$(document).on('click', '.stop-button', function() {
+	$(this).attr('class', 'stop-button-selected'); 
+	stopOrdersToggle("disable");
+});
+
+$(document).on('click', '.stop-button-selected', function() {
+	$(this).attr('class', 'stop-button'); 
+	stopOrdersToggle("enable");
 });
 
 var reqData = {};
 reqData.url = '/ordersList?date=20-9-2016';
 reqData.method = 'get';
 sendRequest(reqData, addOrdersToDiv);
+
+reqData.url = '/ordersList/stop';
+sendRequest(reqData, getOrdersStop);
