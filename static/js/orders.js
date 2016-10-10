@@ -41,9 +41,16 @@ var addOrdersToDiv = function(ordersArray){
 }
 
 function createOrderDiv(order) {
-	var orderDiv = createBaseOrderDiv();
+	var orderDiv = createBaseOrderDiv(order.status);
 	var orderInfoDiv = createOrderInfoDiv(order);
 	orderDiv.append(orderInfoDiv);
+	
+	if (order.status === 'open'){
+		orderDiv.css({'background-color': 'red'});
+	}else if (order.status === 'close'){ 
+		orderDiv.css({'background-color': 'close'});
+	}
+
 	return orderDiv;
 }
 
@@ -58,7 +65,7 @@ function createOrderInfoDiv(order){
 	return orderDiv;
 }
 
-function createBaseOrderDiv() {
+function createBaseOrderDiv(orderStatus) {
 	var orderDiv = $("<div class='orderDiv'></div>"); 
 
 	var toggleButtonText = "<div class='toggle-button'>"
@@ -82,8 +89,14 @@ function stopOrdersToggle(stopOrders){
 	sendRequest(reqData, null, onStopOrdersError);
 }
 
-$(document).on('click', '.toggle-button-selected', function() {
-	$(this).attr('class', 'toggle-button'); 
+$(document).on('click', '.toggle-button', function() {
+    $(this).toggleClass('toggle-button-selected'); 
+    var classValue = $(this).attr('class');
+    if (classValue == "toggle-button"){
+    	$(this).parent().css({'background-color': 'green'});
+    }else{
+		$(this).parent().css({'background-color': 'red'});
+    }
 });
 
 $(document).on('click', '.stop-button', function() {

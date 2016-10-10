@@ -6,11 +6,15 @@ Orders page should display orders count
 Orders page should display handled orders count
 Orders page should display money count
 
-move the logic to a object.
-
 design the order page.
 
 create summery page.
 	name, phone, items, money, paid(yes/no)
 
 let the db read from json file when constructor initialize.	
+
+put unhandled orders first
+
+give option to order by price/time/unhandled
+
+when no-orders-mode make sure to not get orders and inform the customers 
