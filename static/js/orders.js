@@ -34,22 +34,50 @@ var getOrdersStop = function(data){
 
 var addOrdersToDiv = function(ordersArray){
 	var ordersDivElement = $("#ordersDiv");
-	for (var i=0; i<ordersArray.length; i++){
-		var orderDiv = createOrderDiv(ordersArray[i]);
-		ordersDivElement.append(orderDiv);
-	}
+	ordersArray.forEach(function(order, i){
+		var orderDivClone = $('#orderDivTemplate').clone();
+		orderDivClone = createOrderDiv(orderDivClone, order);
+		ordersDivElement.append(orderDivClone);
+	});
 }
 
-function createOrderDiv(order) {
-	var orderDiv = createBaseOrderDiv(order.status);
-	var orderInfoDiv = createOrderInfoDiv(order);
-	orderDiv.append(orderInfoDiv);
+function markOrderAsOpen(orderDiv){
+	orderDiv.find('.handled-button').css({'background-color': 'red'});
+	orderDiv.find('h3').text('!לא טופל');
+	orderDiv.attr('order-status', "open");
+}
+
+function markOrderAsClose(orderDiv){
+	var price = orderDiv.find('.orderPrice');
+	price = $(price[0])
+	price = price.val();
+
+	console.log(parseInt(price))
+	if (!price || !parseInt(price) || parseInt(price) < 1){
+		alert("order should have valid price before closing");
+		return;
+	}
+
+	orderDiv.find('.handled-button').css({'background-color': 'green'});
+	orderDiv.find('h3').text('!טופל');
+	orderDiv.attr('order-status', "close");
+}
+
+function createOrderDiv(orderDiv, order) {
+	// var orderDiv = createBaseOrderDiv(order.status);
+	// var orderInfoDiv = createOrderInfoDiv(order);
+	// orderDiv.append(orderInfoDiv);
 	
 	if (order.status === 'open'){
-		orderDiv.css({'background-color': 'red'});
+		orderDiv.find('.handled-button').css({'background-color': 'red'});
+		orderDiv.find('h3').text('!לא טופל')
 	}else if (order.status === 'close'){ 
-		orderDiv.css({'background-color': 'close'});
+		orderDiv.find('.handled-button').css({'background-color': 'green'});
+		orderDiv.find('h3').text('!טופל')
 	}
+
+	orderDiv.attr('order-status', order.status);
+	orderDiv.css({'display': 'table'});
 
 	return orderDiv;
 }
@@ -90,18 +118,28 @@ function stopOrdersToggle(stopOrders){
 }
 
 $(document).on('click', '.toggle-button', function() {
-    $(this).toggleClass('toggle-button-selected'); 
-    var classValue = $(this).attr('class');
-    if (classValue == "toggle-button"){
-    	$(this).parent().css({'background-color': 'green'});
-    }else{
+	$(this).toggleClass('toggle-button-selected'); 
+	var classValue = $(this).attr('class');
+	if (classValue == "toggle-button"){
+		$(this).parent().css({'background-color': 'green'});
+	}else{
 		$(this).parent().css({'background-color': 'red'});
-    }
+	}
 });
 
 $(document).on('click', '.stop-button', function() {
 	$(this).attr('class', 'stop-button-selected'); 
 	stopOrdersToggle("disable");
+});
+
+$(document).on('click', '.handled-button', function() {
+	var orderDiv = $(this).parent();
+
+	if (orderDiv.attr('order-status') === 'close'){
+		markOrderAsOpen(orderDiv);
+	}else { 
+		markOrderAsClose(orderDiv);
+	}
 });
 
 $(document).on('click', '.stop-button-selected', function() {
@@ -114,5 +152,5 @@ reqData.url = '/ordersList?date=20-9-2016';
 reqData.method = 'get';
 sendRequest(reqData, addOrdersToDiv);
 
-reqData.url = '/ordersList/stop';
-sendRequest(reqData, getOrdersStop);
+// reqData.url = '/ordersList/stop';
+// sendRequest(reqData, getOrdersStop);
