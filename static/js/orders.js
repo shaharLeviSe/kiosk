@@ -24,16 +24,11 @@ function sendRequest(reqData, successCB, errorCB){
 	);
 }
 
-var getOrdersStop = function(data){
-	if (data == "disable"){
-		alert(data);
-		$('#stopOrdersButton').attr('class', 'stop-button-selected');
-	}
-	
-}
-
 var addOrdersToDiv = function(ordersArray){
 	var ordersDivElement = $("#ordersDiv");
+	
+	ordersDivElement.empty();
+
 	ordersArray.forEach(function(order, i){
 		var orderDivClone = $('#orderDivTemplate').clone();
 		orderDivClone = createOrderDiv(orderDivClone, order);
@@ -42,9 +37,16 @@ var addOrdersToDiv = function(ordersArray){
 }
 
 function markOrderAsOpen(orderDiv){
-	orderDiv.find('.handled-button').css({'background-color': 'red'});
-	orderDiv.find('h3').text('!לא טופל');
-	orderDiv.attr('order-status', "open");
+	var success = function(){
+		orderDiv.find('.handled-button').css({'background-color': 'red'});
+		orderDiv.find('h3').text('!לא טופל');
+		orderDiv.attr('order-status', "open");	
+	};
+	
+	var phone = orderDiv.find(".orderPhone");
+	phone = $(phone[0]);
+	createStatusRequest("open", phone.text(), success);
+	
 }
 
 function markOrderAsClose(orderDiv){
@@ -52,21 +54,36 @@ function markOrderAsClose(orderDiv){
 	price = $(price[0])
 	price = price.val();
 
-	console.log(parseInt(price))
 	if (!price || !parseInt(price) || parseInt(price) < 1){
 		alert("order should have valid price before closing");
 		return;
 	}
 
-	orderDiv.find('.handled-button').css({'background-color': 'green'});
-	orderDiv.find('h3').text('!טופל');
-	orderDiv.attr('order-status', "close");
+	var success = function(){
+		orderDiv.find('.handled-button').css({'background-color': 'green'});
+		orderDiv.find('h3').text('!טופל');
+		orderDiv.attr('order-status', "close");
+	};
+
+	var phone = orderDiv.find(".orderPhone");
+	phone = $(phone[0]);
+	createStatusRequest("close", phone.text(), success);
+}
+
+function createStatusRequest(status, phone, onSuccess){
+	var error = function(){
+		alert("unable to save request");
+	}
+
+	var reqData = {};
+	reqData.url = "/order/status";
+	reqData.method = "post";
+	
+	reqData.data = {status:status, phone:phone};
+	sendRequest(reqData, onSuccess, error);
 }
 
 function createOrderDiv(orderDiv, order) {
-	// var orderDiv = createBaseOrderDiv(order.status);
-	// var orderInfoDiv = createOrderInfoDiv(order);
-	// orderDiv.append(orderInfoDiv);
 	
 	if (order.status === 'open'){
 		orderDiv.find('.handled-button').css({'background-color': 'red'});
@@ -76,32 +93,20 @@ function createOrderDiv(orderDiv, order) {
 		orderDiv.find('h3').text('!טופל')
 	}
 
+	var nameSpan = orderDiv.find('.orderName');
+	nameSpan = $(nameSpan[0]);
+	nameSpan.text(order.pname + " " + order.fname);
+
+	var infoSpan = orderDiv.find('.orderInfo');
+	infoSpan = $(infoSpan[0]);
+	infoSpan.attr("order-info", JSON.stringify(order.info))
+
+	var phoneSpan = orderDiv.find('.orderPhone');
+	phoneSpan = $(phoneSpan[0]);
+	phoneSpan.text(order.phone);
+
 	orderDiv.attr('order-status', order.status);
 	orderDiv.css({'display': 'table'});
-
-	return orderDiv;
-}
-
-function createOrderInfoDiv(order){
-	var orderDiv = $("<div class='orderInfoDiv'></div>");
-	var idP = $("<p>id: "+order.id+"</p>");
-	var userP = $("<p>private name: "+order.pname+", family name: "+order.fname+", phone: "+order.phone+"</p>");
-	var infoP = $("<p>info:<br>"+order.info.toString()+"</p>");
-	var commentsP = $("<p>comments:<br>"+order.comments+"</p>");
-	orderDiv.append(idP, userP, infoP, commentsP);
-
-	return orderDiv;
-}
-
-function createBaseOrderDiv(orderStatus) {
-	var orderDiv = $("<div class='orderDiv'></div>"); 
-
-	var toggleButtonText = "<div class='toggle-button'>"
-	+"<button></button>"
-	+"</div>";
-	var toggleButton = $(toggleButtonText);
-
-	orderDiv.append(toggleButton);
 
 	return orderDiv;
 }
@@ -111,6 +116,7 @@ function onStopOrdersError(xhr, status, error){
 }
 
 function stopOrdersToggle(stopOrders){
+	var reqData = {};
 	reqData.url = '/ordersList/stop';
 	reqData.method = 'post';
 	reqData.data = {stopOrders: stopOrders};
@@ -127,10 +133,11 @@ $(document).on('click', '.toggle-button', function() {
 	}
 });
 
-$(document).on('click', '.stop-button', function() {
-	$(this).attr('class', 'stop-button-selected'); 
-	stopOrdersToggle("disable");
+$(document).on('click', '.orderInfo', function() {
+	var orderInfo = JSON.parse($(this).attr('order-info'));
+	alert(JSON.stringify(orderInfo, null, 4)); 
 });
+
 
 $(document).on('click', '.handled-button', function() {
 	var orderDiv = $(this).parent();
@@ -142,15 +149,47 @@ $(document).on('click', '.handled-button', function() {
 	}
 });
 
-$(document).on('click', '.stop-button-selected', function() {
-	$(this).attr('class', 'stop-button'); 
-	stopOrdersToggle("enable");
+$("#stopOrdersButton").click(function(){
+	var status = $(this).text();
+	if (status == "stopped"){
+		stopOrdersToggle("enable");
+		$(this).text("running");
+		$(this).css({'background-color': 'green'});
+	}else{
+		stopOrdersToggle("disable");	
+		$(this).text("stopped");
+		$(this).css({'background-color': 'red'});
+	}
 });
 
-var reqData = {};
-reqData.url = '/ordersList?date=20-9-2016';
-reqData.method = 'get';
-sendRequest(reqData, addOrdersToDiv);
+$(document).on('click', '.stop-button-selected', function() {
+	$(this).attr('class', 'stop-button'); 
+	
+});
 
-// reqData.url = '/ordersList/stop';
-// sendRequest(reqData, getOrdersStop);
+function refreshPage(){
+	var reqData = {};
+	reqData.url = '/ordersList';
+	reqData.method = 'get';
+	sendRequest(reqData, addOrdersToDiv);
+
+	reqData.url = '/ordersList/stop';
+	reqData.method = 'get';
+
+	sendRequest(reqData, 
+		function(data){
+			var button = $("#stopOrdersButton");
+			if (data == "enable"){
+				button.text("running");
+				button.css({'background-color': 'green'});
+			}else{
+				button.text("stopped");
+				button.css({'background-color': 'red'});
+			}
+		});
+}
+
+refreshPage();
+setInterval(function(){
+	refreshPage();
+}, 30000)

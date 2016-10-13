@@ -10,20 +10,21 @@
 	<button id='stopOrdersButton' class='stop-button'>Stop Orders</button>
 
 	<div id="ordersDiv" style="border-style:solid">
-		<div id="orderDivTemplate" style="border-style:solid; display: none;height:100px;width:800px">
-			<div style="border-style:solid;height: auto;overflow: hidden;display: table-cell;">
-				<span><b>name:</b></span><span>shahar levi</span><br>
-				<span><b>phone:</b></span><span>054336843</span><br>
-				<span><b>order:</b></span><span>A lot of things</span><br>
-				<span><b>price:</b></span><input class="orderPrice" type:"number"/><br>
-			</div>
-			<div style="vertical-align: middle; text-align: center; border-style:solid;height: auto;overflow: hidden;display: table-cell;width:20%; background-color: red" class="handled-button">
-				<h3></h3>
-			</div>
-		</div>
+		
 	</div>
 
 	<link rel="stylesheet" href="css/orders.css">
 	<script src="js/orders.js"></script>
+	<div id="orderDivTemplate" style="border-style:solid; display: none;height:100px;width:800px">
+		<div style="border-style:solid;height: auto;overflow: hidden;display: table-cell;">
+			<span><b>name:</b></span><span class="orderName">shahar levi</span><br>
+			<span><b>phone:</b></span><span class="orderPhone">054336843</span><br>
+			<span><b>order:</b></span><span class="orderInfo"><b>[לחץ כאן כדי לצפות]</b></span><br>
+			<span><b>price:</b></span><input class="orderPrice" type:"number"/><br>
+		</div>
+		<div style="vertical-align: middle; text-align: center; border-style:solid;height: auto;overflow: hidden;display: table-cell;width:20%; background-color: red" class="handled-button">
+			<h3></h3>
+		</div>
+	</div>
 </body>
 </html>
