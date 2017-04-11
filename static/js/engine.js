@@ -73,6 +73,12 @@ var setNoOrdersDiv = function(){
 
 var setOrdersDiv = function(){
 	var clone = $("#orderFormOnTemplate").clone();
+	
+	var pname = clone.find("input[name=pname]").first().prop("id", "orderPName");
+	var fname = clone.find("input[name=fname]").first().prop("id", "orderFName");
+	var orderInfo = clone.find("textarea.orderInfo").first().prop("id", "orderInfo");
+	var pname = clone.find("input[name=fphone]").first().prop("id", "orderPhone");
+	
 	clone.css({"display":"block"});
 	$("#orderForm").append(clone);
 }
