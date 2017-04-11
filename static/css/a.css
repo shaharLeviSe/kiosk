@@ -25,3 +25,27 @@ textarea {
 .credentialsLabal {
 	width: 30%;
 }
+
+#orderFormOff{
+	width: 80%;
+
+	height:200px;
+
+	background-color: 	#80b3ff;
+	border: solid;
+	text-align: center;
+	color:#ffffff;
+
+	font-size:25pt;
+	font-family:;
+	font-weight:bold;
+	font-style:italic;
+
+	position: absolute;
+	top:0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+
+	margin: auto;
+}

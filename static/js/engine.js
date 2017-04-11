@@ -1,6 +1,6 @@
 var PHONE_REGEX = /^\d{10}$/;  
 
-$('#submitOrderButton').click(function() {
+$('#orderForm').on("click", ".submitOrderButton", function() {
 	var orderData = createOrderData();
 	var isValid = validateData(orderData);
 	if (isValid){
@@ -10,7 +10,7 @@ $('#submitOrderButton').click(function() {
 
 var validateData = function(orderData){
 	var alertMsg = ""; 
-	if(!orderData.phone.match(PHONE_REGEX)){
+	if(!orderData.phone || !orderData.phone.match(PHONE_REGEX)){
 		alertMsg += "טלפון לא תקין\n";
 	}
 	if(!orderData.info){
@@ -58,7 +58,33 @@ var sendOrderRequest = function(reqData){
 			$.mobile.changePage("#mainPage");
 		},
 		error : function(jqXHR, textStatus, errorThrown){
+			alert(jqXHR);
+			alert(textStatus);
+			alert(errorThrown);
 			alert("משהו השתבש...\n אנא נסה/י שוב.");
 		}
 	});
 }
+
+var setNoOrdersDiv = function(){
+	var clone = $("#orderFormOffTemplate").clone();
+	$("#orderForm").append(clone);
+}
+
+var setOrdersDiv = function(){
+	var clone = $("#orderFormOnTemplate").clone();
+	clone.css({"display":"block"});
+	$("#orderForm").append(clone);
+}
+
+$.ajax('/ordersList/stop', {
+	method : "get",
+	success : function(data, textStatus, jqXHR){
+		if (data == "disable"){
+				//$('#orderForm').hide();
+				setNoOrdersDiv();
+			}else{
+				setOrdersDiv();
+			}
+		}
+	})

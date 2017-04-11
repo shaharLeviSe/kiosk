@@ -70,22 +70,7 @@
 	</div>
 
 	<div data-role="main" class="ui-content">
-		<div class='marginDiv'></div>		
-		<h2>:ההזמנה שלי</h2>
-		<textarea id='orderInfo'></textarea>
-		<h2>:הערות</h2>
-		<textarea id='orderComments'></textarea>
-		<div class="form-group">
-			<label class='credentialsLabal'>שם פרטי</label><input type="text" name="pname" id='orderPName'>
-		</div>
-		<div class="form-group">
-			<label class='credentialsLabal'>שם משפחה</label><input type="text" name="fname" id='orderFName'>
-		</div>
-		<div class="form-group">
-			<label class='credentialsLabal'>טלפון</label><input type="number" name="fphone" id='orderPhone'>
-		</div>
-		<br>
-		<button id='submitOrderButton'>הזמן</button>
+		<div id="orderForm"></div>
 	</div>
 
 	<div data-role="footer">
@@ -97,6 +82,26 @@
 			</ul>
 		</div>
 	</div>
+</div>
+
+<div id="orderFormOffTemplate"><div name="alertDiv">לא ניתן לבצע הזמנות בזמן זה</div></div>
+<div id="orderFormOnTemplate" style="display: none;">
+	<div class='marginDiv'></div>
+	<h2>:ההזמנה שלי</h2>
+	<textarea class='orderInfo'></textarea>
+	<h2>:הערות</h2>
+	<textarea class='orderComments'></textarea>
+	<div class="form-group">
+		<label class='credentialsLabal'>שם פרטי</label><input type="text" name="pname" class='orderPName'>
+	</div>
+	<div class="form-group">
+		<label class='credentialsLabal'>שם משפחה</label><input type="text" name="fname" class='orderFName'>
+	</div>
+	<div class="form-group">
+		<label class='credentialsLabal'>טלפון</label><input type="number" name="fphone" class='orderPhone'>
+	</div>
+	<br>
+	<button class='submitOrderButton'>הזמן</button>
 </div>
 
 <link rel="stylesheet" href="css/a.css">
