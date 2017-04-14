@@ -1,3 +1,5 @@
+wht happen in case where the button in the orders page is not up to date?(e.g sending enable when already enabled)
+
 Page of orders should ask every X seconds for new orders.\
 
 each order should have money to charge.

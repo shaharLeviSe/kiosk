@@ -58,10 +58,11 @@ var sendOrderRequest = function(reqData){
 			$.mobile.changePage("#mainPage");
 		},
 		error : function(jqXHR, textStatus, errorThrown){
-			alert(jqXHR);
-			alert(textStatus);
-			alert(errorThrown);
-			alert("משהו השתבש...\n אנא נסה/י שוב.");
+			if (jqXHR.status == 401 && jqXHR.responseText == "disable"){
+				alert("לא ניתן לבצע הזמנות נוספות כרגע...\n.");
+			}else{
+				alert("משהו השתבש...\n אנא נסה/י שוב.");
+			}
 		}
 	});
 }

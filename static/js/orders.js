@@ -25,6 +25,7 @@ function sendRequest(reqData, successCB, errorCB){
 }
 
 var addOrdersToDiv = function(ordersArray){
+	console.log("Found " + ordersArray.length + " orders!");
 	var ordersDivElement = $("#ordersDiv");
 	
 	ordersDivElement.empty();
@@ -67,10 +68,12 @@ function markOrderAsClose(orderDiv){
 
 	var phone = orderDiv.find(".orderPhone");
 	phone = $(phone[0]);
-	createStatusRequest("close", phone.text(), success);
+	var orderPrice = orderDiv.find(".orderPrice");
+	orderPrice = $(orderPrice[0]);
+	createStatusRequest("close", phone.text(), orderPrice.text(), success);
 }
 
-function createStatusRequest(status, phone, onSuccess){
+function createStatusRequest(status, phone, price, onSuccess){
 	var error = function(){
 		alert("unable to save request");
 	}
@@ -79,12 +82,13 @@ function createStatusRequest(status, phone, onSuccess){
 	reqData.url = "/order/status";
 	reqData.method = "post";
 	
-	reqData.data = {status:status, phone:phone};
+	reqData.data = {status:status, phone:phone, price:price};
 	sendRequest(reqData, onSuccess, error);
 }
 
 function createOrderDiv(orderDiv, order) {
-	
+	console.log("Tihs s order: ");
+	console.log(order);
 	if (order.status === 'open'){
 		orderDiv.find('.handled-button').css({'background-color': 'red'});
 		orderDiv.find('h3').text('!לא טופל')
