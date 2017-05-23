@@ -1,9 +1,5 @@
-wht happen in case where the button in the orders page is not up to date?(e.g sending enable when already enabled)
-
-Page of orders should ask every X seconds for new orders.\
-
-each order should have money to charge.
-
+be able to update price
+bug: after marked as 'handled', you can delete price..
 Orders page should display orders count
 Orders page should display handled orders count
 Orders page should display money count
@@ -13,10 +9,6 @@ design the order page.
 create summery page.
 	name, phone, items, money, paid(yes/no)
 
-let the db read from json file when constructor initialize.	
-
 put unhandled orders first
 
 give option to order by price/time/unhandled
-
-when no-orders-mode make sure to not get orders and inform the customers 
